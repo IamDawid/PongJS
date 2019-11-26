@@ -44,7 +44,7 @@
        }
 
 		window.onload = function() {
-			console.log("Hello World!");
+			//console.log("Hello World!");
 			canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
             
@@ -140,6 +140,12 @@
 			}
 		}
 
+		function drawNet() { //as the namesuggests - draws the net
+			for(var i=0; i<canvas.height; i+=40){
+				colorRect(canvas.width/2-1,i,2,20,'white');
+			}
+		}
+
 		function drawEverything(){     //draws the game screen
 			
 
@@ -163,6 +169,8 @@
             	
 				return;
 			}
+
+			drawNet();
 
             colorRect(0,paddle1Y,10,100,'white'); //player paddle
 
