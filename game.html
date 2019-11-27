@@ -17,6 +17,8 @@
         const WINNING_SCORE = 3;
 
         let showingWinScreen = false;
+        let showingScoredScreen = false;
+      
 
         let paddle1Y = 250;
         let paddle2Y = 250;
@@ -41,6 +43,12 @@
           	player2score = 0;
           	showingWinScreen = false;
           }       	
+
+          if(showingScoredScreen){
+          	showingScoredScreen = false;
+          	ballSpeedX =10;   //  Brings ballSpeed variables to default values
+            ballSpeedY = 4;   //  Makes the ball move again after showing the score screen
+          }
        }
 
 		window.onload = function() {
@@ -98,7 +106,7 @@
 			ballY += ballSpeedY;
 
 
-            //right paddle bounce + reset
+            //right paddle bounce + score screen + reset 
 			if(ballX > canvas.width){
               	if(ballY > paddle2Y &&
 				   ballY < paddle2Y+PADDLE_HEIGHT){
@@ -110,10 +118,11 @@
 				}else{
 					player1score++;
 					ballReset();
+					showingScoredScreen = true;
 				}
 			}
 
-			//left paddle bounce + reset
+			//left paddle bounce + score screen + reset
 			if(ballX < 0){
 				if(ballY > paddle1Y &&
 				   ballY < paddle1Y+PADDLE_HEIGHT){
@@ -125,12 +134,13 @@
 				}else{
 					player2score++;
 					ballReset();
+					showingScoredScreen = true;
 				}
 
 
 
 				
-                 
+            //ball bounce off the top and bottom 
 			}
 			if(ballY > canvas.height){
                  ballSpeedY = -ballSpeedY
@@ -152,7 +162,7 @@
 
             colorRect(0,0,canvas.width,canvas.height,'black');  //blank out the screen with black
 
-            if(showingWinScreen){
+            if(showingWinScreen){     //shows the WinScreen
             	canvasContext.fillStyle = "white";
 
             	if(player1score >= WINNING_SCORE){
@@ -170,6 +180,20 @@
 				return;
 			}
 
+			if(showingScoredScreen){    //shows the score screen after one of the players scores
+
+				ballSpeedX =0;  // this is to stop the ball from moving and scoring
+                ballSpeedY =0;  // while the scoreScreen is being displayed
+				canvasContext.fillStyle = "white";
+                canvasContext.fillText(`${player1score} : ${player2score}` , 395, 200)
+            	canvasContext.fillText("Click to continue", 370,500); 
+
+            	return;
+           	}
+
+
+
+
 			drawNet();
 
             colorRect(0,paddle1Y,10,100,'white'); //player paddle
@@ -178,8 +202,8 @@
 
             colorCircle(ballX, ballY, 10, 'white'); //ball
 
-            canvasContext.fillText(player1score, 100, 100);
-            canvasContext.fillText(player2score, canvas.width-100,100);
+            canvasContext.fillText(player1score, 100, 100);  // p1 score
+            canvasContext.fillText(player2score, canvas.width-100,100); // p2 score
            
 		}
 
